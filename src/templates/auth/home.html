@@ -1,0 +1,18 @@
+{% extends 'auth/base.html' %}
+
+{% block title %}Login Page{% endblock title %}
+
+{% block style %}
+
+.container-sm, .container-xl, .container-xxl {
+    max-width: 807px;
+}
+{% endblock style %}
+
+{% block content %}
+
+{{ request.user }}
+
+
+{{ request.email }}
+{% endblock content %}

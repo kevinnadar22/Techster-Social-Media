@@ -1,0 +1,208 @@
+{% extends 'auth/base.html' %}
+{% load static %}
+{% block title %}Login Page{% endblock title %}
+
+
+{% block css2 %}https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css{% endblock css2 %}
+
+{% block style %}
+
+.container-sm, .container-xl, .container-xxl {
+    max-width: 807px;
+}
+
+
+  .login-form .social-icon {
+      width: 100%;
+      font-size: 20px;
+      padding-top: 20px;
+      color: #fff;
+      text-align: center;
+      float: left;
+  }
+
+
+  .login-form input {
+      width: 100%;
+      padding: 5px;
+      height: 56px;
+      border-radius: 74px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-size: 15px;
+      padding-left: 75px;
+  }
+  .login-form .form-group .input-icon {
+      font-size: 15px;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: flex;
+      align-items: center;
+      position: absolute;
+      border-radius: 25px;
+      bottom: 0;
+      height: 100%;
+      padding-left: 35px;
+      color: #666;
+  }
+  .login-form .login-btn {
+    background: #45aba6;
+    padding: 11px 50px;
+    border-color: #45aba6;
+    color: #fff;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 20px;
+    border: 1px solid #45aba6;
+    border-radius: 44px;
+    width: 100%;
+    height: 56px;
+    cursor: pointer;
+  }
+
+  .login-form .social-icon button {
+      font-size: 20px;
+      color: white;
+      height: 50px;
+      width: 50px;
+      background: #0d6efd;
+      border-radius: 60%;
+      margin: 0px 10px;
+      border: none;
+      cursor: pointer;
+  }
+  .login-form button:hover{
+    opacity: 0.9;
+  }
+  .login-form .seperator {
+    float: left;
+    width: 100%;
+    border-top: 1px solid #ccc;
+    text-align: center;
+    margin: 50px 0 0;
+  }
+  .login-form .seperator b {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    text-align: center;
+    line-height: 40px;
+    background: #fff;
+    display: inline-block;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    position: relative;
+    top: -22px;
+    z-index: 1;
+  }
+  .login-form p {
+    float: left;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    margin: 0 0 10px;
+  }
+  @media screen and (max-width:767px) {
+  .login-form {
+      width: 90%;
+      padding: 15px 15px 30px;
+  }
+  }
+
+
+{% endblock style %}
+
+{% block content %}
+
+
+  
+  <main>
+    <div class="container">
+
+      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+              <div class="d-flex justify-content-center py-4">
+                <a href="{% url 'home' %}" class="logo d-flex align-items-center w-auto">
+                  <img src="{% static 'img/logo.png' %}" alt="">
+                  <span class="d-none d-lg-block">Techster</span>
+                </a>
+              </div><!-- End Logo -->
+
+              <div class="card mb-3">
+
+                <div class="card-body">
+
+                  <div class="pt-4 pb-2">
+                    <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
+                    <p class="text-center small">Enter your username & password to login</p>
+                  </div>
+
+                  <form method="post" class="row g-3 needs-validation" novalidate> {% csrf_token %}
+
+                    <div class="col-12">
+                      <label for="yourUsername" class="form-label">Username</label>
+                      <div class="input-group has-validation">
+                        <span class="input-group-text" id="inputGroupPrepend">@</span>
+                        <input type="text" name="username" class="form-control" id="yourUsername" required>
+                        <div class="invalid-feedback">Please enter your username.</div>
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="yourPassword" class="form-label">Password</label>
+                      <input type="password" name="password" class="form-control" id="yourPassword" required>
+                      <div class="invalid-feedback">Please enter your password!</div>
+                    </div>
+
+                    <div class="col-12">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">Remember me</label>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <button name="login" class="btn btn-primary w-100" type="submit">Login</button>
+                    </div>
+                    <div class="col-12">
+                      <p class="small mb-0">Don't have account? <a href="{% url 'signup' %}">Create an account</a></p>
+                    </div>
+
+                    <div class="col-12">
+                      <p class="small mb-0">Forget Password? <a href="{% url 'forget_password' %}">Reset Password</a></p>
+                    </div>
+
+
+      {% if  is_social %}
+
+      {% include 'auth/socialicons.html' %}
+      
+      {% endif %}
+
+                  </form>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main><!-- End #main -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+
+
+
+
+
+{% endblock content %}

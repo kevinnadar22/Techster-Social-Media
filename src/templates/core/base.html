@@ -1,0 +1,68 @@
+{% load static %}
+{% load custom_tag %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Favicons -->
+<link href="{% static 'img/favicon.png' %}" rel="icon">
+<link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <title>    {% block title %}Techster{% endblock title %}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.css" />
+
+  <style>
+      .space-x-2 > :not([hidden]) ~ :not([hidden]) {
+          --tw-space-x-reverse: 1; 
+          margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+          margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+      }
+  </style>
+
+
+</head>
+
+<body>
+
+    {% block content %}{% endblock content %}
+
+ 
+
+    <script src="{% static 'assets/js/tippy.all.min.js' %}"></script>  
+    <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/uikit.js' %}"></script>
+    <script src="{% static 'assets/js/simplebar.js' %}"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+    <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.js"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/infinite.min.js' %}"></script>
+    <script src="{% static 'js/comments.js' %}"></script>
+
+    <script>
+        var infinite = new Waypoint.Infinite({
+          element: $('.infinite-container')[0],
+          onBeforePageLoad: function () {
+            $('.loading').show();
+          },
+          onAfterPageLoad: function ($items) {
+
+            start()
+
+            $('.loading').hide();
+            
+          }
+        });
+      </script>
+
+</body>
+
+</html>

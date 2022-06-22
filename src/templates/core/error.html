@@ -1,0 +1,26 @@
+{% extends 'auth/base.html' %}
+{% load static %}
+{% block title %}{{error_title}}{% endblock title %}
+{% block content %}
+<body>
+
+    <main>
+      <div class="container">
+  
+        <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+          <h1>{{status_code}}</h1>
+          <h2>{{error_message}}</h2>
+          <a class="btn" href="{% url 'home' %}">Back to home</a>
+          <img src="{% static 'img/not-found.svg' %}" class="img-fluid py-5" alt="Page Not Found">
+        </section>
+  
+      </div>
+    </main><!-- End #main -->
+  
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  
+  
+  </body>
+  
+
+{% endblock content %}

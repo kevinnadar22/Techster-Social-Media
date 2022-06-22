@@ -1,0 +1,77 @@
+{% extends 'auth/base.html' %}
+{% load crispy_forms_tags %}
+{% include 'auth/navbar.html' %}
+{% block title %}2 Step Verification{% endblock title %}
+
+{% block style %}
+
+.container-sm, .container-xl, .container-xxl {
+    max-width: 807px;
+}
+
+{% endblock style %}
+
+{% block content %}
+
+<div id="messages" class="messages">
+
+
+</div>
+
+
+<div class="container-sm my-5">
+   <form method="post" id="getOTP"> {% csrf_token %}
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Phone Number</label>
+        <div class="col-sm-10">
+          <input type="text" readonly name="phone" class="form-control-plaintext" id="staticPhone" value="{{profile.phone}}">
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="inputPassword" class="col-sm-2 col-form-label">OTP</label>
+        <div class="col-sm-10">
+          <input name="otp" type="number" class="form-control">
+        </div>
+      </div>
+      <button id="submitButton" name="2fa" type="submit" class="btn btn-primary">Get OTP</button>
+   </form>
+</div>
+
+<script type="text/javascript">
+
+    $(document).on('submit','#getOTP',function(e){
+        e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url:'{% url 'get-otp' %}',
+            data:{
+                phone_number:$('#staticPhone').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function(data){
+                const obj = JSON.parse(data);
+                if (obj['Status'] == 'Success'){
+                    document.getElementById('submitButton').innerText = 'Submit'
+                    $('#getOTP').attr("id","submitOTP")
+
+                    html = ` <div class="alert alert-success alert-dismissible fade show" role="alert">
+                     OTP sent successfully
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>`
+                  document.getElementById('messages').innerHTML = html
+                }
+                else{
+                  html = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Something went wrong
+                       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                     </div>`
+                  document.getElementById('messages').innerHTML = html
+                }
+                 
+            }
+          });
+    })
+    
+</script>
+
+{% endblock content %}

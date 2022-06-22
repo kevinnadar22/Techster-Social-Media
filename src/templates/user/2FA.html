@@ -1,0 +1,159 @@
+{% extends 'auth/base.html' %}
+{% load crispy_forms_tags %}
+{% include 'auth/navbar.html' %}
+{% block title %}2 Step Verification{% endblock title %}
+{% load static %}
+{% block style %}
+
+.container-sm, .container-xl, .container-xxl {
+    max-width: 807px;
+}
+
+
+.min-vh-100 {
+  min-height: 70vh!important;
+}
+
+{% endblock style %}
+
+{% block content %}
+
+<div id="messages" class="messages">
+
+
+</div>
+
+{% if profile.phone == None %}
+<div class="container-sm my-5"> 
+
+  <h4>Set your phone number in <a href="{% url 'profile' %}">Profile</a></h4>
+</div>
+{% elif profile.is_2fa == True %}
+
+<div class="container-sm my-5">
+
+ <h2> Your account has two step verification turned on</h2>
+</div>
+
+{% else %}
+
+<main>
+  <div class="container">
+
+    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+            <div class="d-flex justify-content-center py-4">
+              <a href="{% url 'home' %}" class="logo d-flex align-items-center w-auto">
+                <img src="{% static 'img/logo.png' %}" alt="">
+                <span class="d-none d-lg-block">Techster</span>
+              </a>
+            </div><!-- End Logo -->
+
+            <div class="card mb-3">
+
+              <div class="card-body">
+
+                <div class="pt-4 pb-2">
+                  <h5 class="card-title text-center pb-0 fs-4">Set two factor authentication</h5>
+                  <p class="text-center small">Enter the OTP</p>
+                </div>
+             
+                <form method="post" id="getOTP" class="row g-3 needs-validation" novalidate> {% csrf_token %}
+
+                  <div class="col-12">
+                    <label for="yourUsername" class="form-label">Phone Number</label>
+                    <div class="input-group has-validation">
+                    
+                      <input type="text" id="staticPhone" readonly name="phone_number" class="form-control" value="{{profile.phone}}">
+                    
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <label class="form-label">OTP</label>
+                    <input type="text" name="otp" class="form-control">
+                    <div class="invalid-feedback">Enter the OTP</div>
+                  </div>
+
+                  <div class="col-12">
+                    <button id="submitButton" type="submit" class="btn btn-primary">Get OTP</button>
+                  </div>
+
+                  </div>
+                </form>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+</main><!-- End #main -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+{% comment %} <div class="container-sm my-5">
+   <form method="post" id="getOTP"> {% csrf_token %}
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Phone Number</label>
+        <div class="col-sm-10">
+          <input type="text" readonly class="form-control-plaintext" id="staticPhone" value="{{profile.phone}}">
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="inputPassword" class="col-sm-2 col-form-label">OTP</label>
+        <div class="col-sm-10">
+          <input name="otp" type="number" class="form-control">
+        </div>
+      </div>
+      <button id="submitButton" type="submit" class="btn btn-primary">Get OTP</button>
+   </form>
+</div> {% endcomment %}
+
+{% endif %}
+
+<script type="text/javascript">
+
+    $(document).on('submit','#getOTP',function(e){
+        e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url:'{% url 'get-otp' %}',
+            data:{
+                phone_number:$('#staticPhone').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function(data){
+                const obj = JSON.parse(data);
+                if (obj['Status'] == 'Success'){
+                    document.getElementById('submitButton').innerText = 'Submit'
+                    $('#getOTP').attr("id","submitOTP")
+
+                    html = ` <div class="alert alert-success alert-dismissible fade show" role="alert">
+                     OTP sent successfully
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>`
+                  document.getElementById('messages').innerHTML = html
+                }
+                else{
+                  html = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Something went wrong
+                       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                     </div>`
+                  document.getElementById('messages').innerHTML = html
+                }
+                 
+            }
+          });
+    }) 
+</script>
+
+{% endblock content %}
