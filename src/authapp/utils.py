@@ -10,6 +10,9 @@ from django.utils.encoding import force_bytes
 from .tokens import *
 from django.core.mail import EmailMessage
 from info import *
+import os
+from sendgrid.helpers.mail import Mail
+from sendgrid import SendGridAPIClient
 
 class AuthenticationUtils():
     def __init__(self, 
@@ -117,3 +120,4 @@ def send_email(request, user, subject, email_template, email_type='html', ):
     send_email.content_subtype = email_type
     send_email.send()
     return token
+

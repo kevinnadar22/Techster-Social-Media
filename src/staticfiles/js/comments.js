@@ -5,7 +5,6 @@ likeIconArray.forEach(function(likeIcons) {
     likeIcons.addEventListener('click', likeIconFunc);
   });
 
-
   
 function likeIconFunc(){
 

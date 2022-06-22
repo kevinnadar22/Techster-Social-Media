@@ -1,10 +1,10 @@
 # Email Info
 
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp-relay.sendinblue.com'
+EMAIL_HOST = 'smtp.elasticemail.com'
 EMAIL_HOST_USER = 'jesikamaraj@gmail.com'
-EMAIL_HOST_PASSWORD = 'cavEq1HhCGXsAP3p'
-EMAIL_PORT = 587
+EMAIL_HOST_PASSWORD = 'B1E85DACF85E9BB529FF1B52E118BB5C1C55'
+EMAIL_PORT = 2525
 
 #  Social Auth Configuration
 
@@ -34,9 +34,9 @@ REDIRECT_AFTER_SIGNUP = 'login'
 
 # Couldinary fields
 CLOUDINARY = {
-  'cloud_name': 'kevinnadar',  
-  'api_key': '392621114285936',  
-  'api_secret': '2h4qbdlIwx6cDgNtmtXWlv5PdYg',  
+  'cloud_name': 'kevinnadar',
+  'api_key': '392621114285936',
+  'api_secret': '2h4qbdlIwx6cDgNtmtXWlv5PdYg',
 }
 
 # Crispy Fields

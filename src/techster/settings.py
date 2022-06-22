@@ -156,6 +156,7 @@ EMAIL_HOST = EMAIL_HOST
 EMAIL_HOST_USER = EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 EMAIL_PORT = EMAIL_PORT
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #  Social Auth Configuration
 
