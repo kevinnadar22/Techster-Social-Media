@@ -24,6 +24,11 @@ commentIconArray.forEach(function (commentIcons) {
 
 function commentIconFunc() {
 
+  NProgress.configure({ easing: 'ease', speed: 100 });
+  NProgress.configure({ trickleSpeed: 200 });
+  
+  NProgress.start();
+
   let comment_id = this.id.replace('comment#', '');
   let comment_like = `commentlike#${comment_id}`
   $.ajax({
@@ -34,12 +39,18 @@ function commentIconFunc() {
     },
     success: function (data) {
       document.getElementById(comment_like).innerText = data['message'];
-
+      NProgress.done();
     }
+
   });
 }
 
 function likeIconFunc() {
+
+  NProgress.configure({ easing: 'ease', speed: 100 });
+  NProgress.configure({ trickleSpeed: 200 });
+  
+  NProgress.start();
 
   id = this.id
   like_id = `like#${id}`
@@ -64,12 +75,20 @@ function likeIconFunc() {
 
       }
 
+      NProgress.done();
+
     }
   });
 }
 
 
 function followIconFunc(){
+
+  NProgress.configure({ easing: 'ease', speed: 100 });
+  NProgress.configure({ trickleSpeed: 200 });
+  
+  NProgress.start();
+
   followeduser = this.id.replace("follow#", '')
   id = this.id
   let followcount = `followcount#${followeduser}`
@@ -83,6 +102,7 @@ function followIconFunc(){
       document.getElementById(id).innerText = data['message'];
       document.getElementById(followcount).innerText = data['followcount'];
 
+      NProgress.done();
     }
   });
 }
@@ -114,30 +134,36 @@ postCommentArray.forEach(function (postComments) {
 // End Comment
 
 function postCommentFunc(event) {
-    event.preventDefault()
-    let comment_id = this.id.replace("post#", 'comment#')
-    let id = this.id.replace("post#", '')
-    let commented = document.getElementById(comment_id).value;
-    document.getElementById(comment_id).value = ''
 
-    $.ajax({
-      type: 'POST',
-      url: '/post-comment/',
-      data: {
-        post: id,
-        comment:commented,
-        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-      },
-      success: function (data) {
-
-        html = data['html']
-        let htmlObject = $(html)
-        let eElement = document.querySelector(`.comments-container_${id}`)
-        let newElement = htmlObject[0]; //element which should be first in E
-
-        eElement.insertBefore(newElement, eElement.firstChild);
-        start()
-
+  NProgress.configure({ easing: 'ease', speed: 100 });
+  NProgress.configure({ trickleSpeed: 200 });
+  
+  NProgress.start();
+  event.preventDefault()
+  let comment_id = this.id.replace("post#", 'comment#')
+  let id = this.id.replace("post#", '')
+  let commented = document.getElementById(comment_id).value;
+  document.getElementById(comment_id).value = ''
+  
+  $.ajax({
+    type: 'POST',
+    url: '/post-comment/',
+    data: {
+      post: id,
+      comment:commented,
+      csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+    },
+    success: function (data) {
+      
+      html = data['html']
+      let htmlObject = $(html)
+      let eElement = document.querySelector(`.comments-container_${id}`)
+      let newElement = htmlObject[0]; //element which should be first in E
+      
+      eElement.insertBefore(newElement, eElement.firstChild);
+      NProgress.done();
+      start()
+      
       }
     });
   }
@@ -159,10 +185,14 @@ deleteCommentArray.forEach(function (deleteComments) {
 
 
 function deleteCommentFunc(event) {
+  NProgress.configure({ easing: 'ease', speed: 100 });
+  NProgress.configure({ trickleSpeed: 200 });
+  
+  NProgress.start();
   event.preventDefault()
   id = this.id
   let deletedComment = this.id.replace("deletecomment#", '')
-
+  
   $.ajax({
     type: 'GET',
     url: '/deletecomment/',
@@ -172,9 +202,10 @@ function deleteCommentFunc(event) {
     },
     success: function (data) {
       if (data['status'] == 'success'){
-      commentHTML = id.replace("deletecomment#", 'commentbox#')
-      document.getElementById(commentHTML).remove()
-      
+        commentHTML = id.replace("deletecomment#", 'commentbox#')
+        document.getElementById(commentHTML).remove()
+        
+        NProgress.done();
       start()
     }
     
@@ -198,6 +229,11 @@ function favoritesIcon() {
 
 
 function makeFavoriteFunc(event) {
+  NProgress.configure({ easing: 'ease', speed: 100 });
+  NProgress.configure({ trickleSpeed: 200 });
+  
+  NProgress.start();
+
   event.preventDefault()
   id = this.id
   let favorites = this.id.replace("favorites#", '')
@@ -215,7 +251,8 @@ function makeFavoriteFunc(event) {
       let eElement = document.getElementById(id)
 
       eElement.innerHTML = html;
-      
+
+      NProgress.done();
       start()
     }
   });
@@ -237,6 +274,12 @@ function deleteIcon() {
 
 function deletePostFunc(event) {
 
+  NProgress.configure({ easing: 'ease', speed: 100 });
+  NProgress.configure({ trickleSpeed: 200 });
+  
+  NProgress.start();
+
+
   event.preventDefault()
   id = this.id
   let deleted_post = this.id.replace("delete#", '')
@@ -252,6 +295,8 @@ function deletePostFunc(event) {
       if (data['status'] == 'success'){
         window.location.replace("/");
       }
+
+      NProgress.done();
       start()
     }
   });

@@ -3,6 +3,7 @@
 {% include 'auth/navbar.html' %}
 {% block title %}2 Step Verification{% endblock title %}
 {% load static %}
+{% block css1 %} {% static 'css/progress.css' %} {% endblock css1 %}
 {% block style %}
 
 .container-sm, .container-xl, .container-xxl {
@@ -120,10 +121,18 @@
 
 {% endif %}
 
+<script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+
 <script type="text/javascript">
 
-    $(document).on('submit','#getOTP',function(e){
+      $(document).on('submit','#getOTP',function(e){
         e.preventDefault();
+
+        NProgress.configure({ easing: 'ease', speed: 100 });
+        NProgress.configure({ trickleSpeed: 200 });
+        
+        NProgress.start();
+
         $.ajax({
             type:'POST',
             url:'{% url 'get-otp' %}',
@@ -150,8 +159,9 @@
                      </div>`
                   document.getElementById('messages').innerHTML = html
                 }
-                 
+               NProgress.done();  
             }
+            
           });
     }) 
 </script>
