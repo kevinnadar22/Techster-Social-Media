@@ -71,15 +71,13 @@
         <div class="py-20">
           <div class="flex items-center px-5 py-2">
             <span class="w-1/2">
-               <span class="text-xs uppercase text-gray-600 font-bold">Username</span>
+               <span class="text-xs text-gray-600 font-bold">Username</span>
             </span>
-            <span class="w-1/4">
-              <span class="text-xs uppercase text-gray-600 font-bold">Name</span>
-            </span>
-            <span class="w-1/4">
+
+            <span class="hidden lg:block w-1/4">
               <span class="text-xs uppercase text-gray-600 font-bold">Followers</span>
             </span>
-            <span class="w-1/4">
+            <span class="hidden lg:block w-1/4">
              <span class="text-xs uppercase text-gray-600 font-bold">Following</span>
             </span>
 
@@ -92,7 +90,7 @@
            
             <div class="w-1/2">
               <div class="flex items-center">
-                <img width="50px" height='50%' src="/media/{{user.profile_image}}" class="rounded-full">
+                <img width="50px" height='50%' src="{{user.image_url}}" class="rounded-full">
                 <div class="ml-4">
                   <span class="capitalize block text-gray-800">{{user.user}}</span>
                   <span class="text-sm block text-gray-600">{{user.user.email}}</span>
@@ -100,13 +98,11 @@
     
               </div>
             </div>
-            <div class="w-1/4">
-              <span class="capitalize text-gray-600 text-sm">{{user.user.first_name}}{{user.user.last_name}}</span>
-            </div>
-            <div class="w-1/4">
+
+            <div class="hidden lg:block w-1/4">
               <span class="capitalize text-gray-600 text-sm">{{user.followers.all.count}}</span>
             </div>
-            <div class="w-1/4">
+            <div class="hidden lg:block w-1/4">
               <span class="text-gray-600 text-sm">{{user.following.all.count}}</span>
             </div>
 

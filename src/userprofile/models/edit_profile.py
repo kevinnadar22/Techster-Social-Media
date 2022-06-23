@@ -1,7 +1,8 @@
+from tokenize import blank_re
 from django.db import models
 from django.contrib.auth.models import User
 from django_countries.data import COUNTRIES
-
+from cloudinary.models import CloudinaryField
 
 GENDER = [
     ('Male', 'Male'),
@@ -14,7 +15,7 @@ class UserEditProfile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=True, null=True)
-    profile_image = models.ImageField(blank=True, null=True, default='default_profile.png', upload_to="profile_images")
+    profile_image = CloudinaryField('image', blank = True, null=True)
     bio = models.TextField(max_length=255, blank=True, null=True,)
     gender = models.CharField(max_length=255, blank=True, choices=GENDER)
     job = models.CharField(max_length=50, blank=True, null=True)
@@ -42,3 +43,11 @@ class UserEditProfile(models.Model):
                 self.phone = x
         
         super(UserEditProfile, self).save(*args, **kwargs)
+
+    @property
+    def image_url(self):
+        if self.profile_image is None:
+            return '/media/default_profile.png'
+        return (
+            f"https://res.cloudinary.com/kevinnadar/v1655924460/{self.profile_image}"
+        )

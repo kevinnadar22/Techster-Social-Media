@@ -67,7 +67,7 @@ def comment_html(profile, commented, new_comment):
                                         <div id="commentbox#{new_comment.id}" class="flex comment-box">
                                         
                                         <div class="w-10 h-10 rounded-full relative flex-shrink-0">
-                                            <img src="/media/{profile}" alt="" class="absolute h-full rounded-full w-full">
+                                            <img src="{profile}" alt="" class="absolute h-full rounded-full w-full">
                                         </div>
                                         <div class="w-full text-gray-700 py-2 px-3 rounded-md bg-gray-100 h-full relative lg:ml-5 ml-2 lg:mr-20 ">
 

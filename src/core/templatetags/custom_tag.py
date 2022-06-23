@@ -11,8 +11,8 @@ from django.db.models import Q
 @register.simple_tag
 def get_profile_image(user):
       user_profile = _UserProfileModel.objects.get(user=user)
-      return user_profile.profile_image
-
+      print("profile image: " + user_profile.image_url)
+      return user_profile.image_url
 
 @register.simple_tag()
 def replace_hash(caption:str):

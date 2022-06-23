@@ -36,7 +36,7 @@ class EditProfileView(View):
                 profile.profile_image = request.FILES['profile_image']
 
             if 'delete' in request.POST:
-                profile.profile_image = 'default_profile.png'
+                profile.profile_image = None
 
             profile.user = self.request.user
             profile.save()

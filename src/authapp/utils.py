@@ -11,8 +11,6 @@ from .tokens import *
 from django.core.mail import EmailMessage
 from info import *
 import os
-from sendgrid.helpers.mail import Mail
-from sendgrid import SendGridAPIClient
 
 class AuthenticationUtils():
     def __init__(self, 

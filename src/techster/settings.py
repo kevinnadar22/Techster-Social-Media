@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'social_django', 
     'userprofile',
     'crispy_forms',
-    'core'
+    'core',
+    'cloudinary'
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'techster.urls'
 
@@ -96,6 +100,18 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME':'dbamc6j8s3l8nu',
+#         'HOST':'ec2-18-204-142-254.compute-1.amazonaws.com',
+#         'PORT':5432,
+#         'USER' : 'youaivhitcsfjq',
+#         'PASSWORD' : '5b38b4b15fe7094c499eeb9590474355ac9d92e8cce6f8bd8edc24f6476230e3'
+        
+#     }
+# }
 
 
 # Password validation
@@ -203,3 +219,7 @@ TWOFACTORIN_API = TWOFACTORIN_API
 
 RAZORPAY_API = RAZORPAY_API
 RAZORPAY_API_SECRET = RAZORPAY_API_SECRET
+
+# Git init
+
+Nothing = True

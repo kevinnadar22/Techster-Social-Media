@@ -44,7 +44,7 @@
             <div class="card">
               <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
   
-                <img width="100px" height="100px" src="/media/{{profile.profile_image}}" alt="Profile" class="rounded-circle">
+                <img width="100px" height="100px" src="{{profile.image_url}}" alt="Profile" class="rounded-circle">
                 <h2>
                   {% if profile.first_name is not None %}{{profile.first_name}}{% endif %}
                   {% if profile.last_name is not None %}{{profile.last_name}}{% endif %}
@@ -142,7 +142,7 @@
                         <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                         <div class="col-md-8 col-lg-9">
 
-                          <img style="border-radius:50px" width="100px" height="100px" src="/media/{{profile.profile_image}}" alt="Profile" class="rounded-circle">
+                          <img style="border-radius:50px" width="100px" height="100px" src="{{profile.image_url}}" alt="Profile" class="rounded-circle">
 
                        
                           <div class="pt-2">

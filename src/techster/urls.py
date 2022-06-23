@@ -26,6 +26,8 @@ urlpatterns = [
     path('user/', include('userprofile.urls')),
     path('', include('core.urls')),
     path('error/', error, name='error'),
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

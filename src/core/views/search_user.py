@@ -25,10 +25,9 @@ class SearchUserView(ListView):
                 Q(first_name__icontains=query) |
                 Q(last_name__icontains=query)
                 )
-            result_user = []
-            for user in results:
-                users = _UserProfileModel.objects.get(user=user)
-                result_user.append(users)
+                
+            result_user = _UserProfileModel.objects.filter(user__in=results)
+            print(results)
 
             if len(result_user) > 0:
                 return result_user

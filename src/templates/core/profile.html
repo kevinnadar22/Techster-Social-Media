@@ -68,7 +68,7 @@
         <div class="md:w-3/12 md:ml-16">
           <!-- profile image -->
           <img class="w-20 h-20 md:w-40 md:h-40 object-cover rounded-full
-                       border-2 border-pink-600 p-1" src="/media/{{profile.profile_image}}" alt="profile">
+                       border-2 border-pink-600 p-1" src="{{profile.image_url}}" alt="profile">
         </div>
   
         <!-- profile meta -->
@@ -217,7 +217,7 @@
             <a href="{% url 'post_detail' post.id %}">
               <article class="post bg-gray-100 text-white relative pb-full md:mb-6">
                 <!-- post image-->
-                <img class="w-full h-full absolute left-0 top-0 object-cover" src="/media/{{post.image}}" alt="image">
+                <img class="w-full h-full absolute left-0 top-0 object-cover" src="{{post.image_url}}" alt="image">
   
                 <i class="fas fa-square absolute right-0 top-0 m-1"></i>
                 <!-- overlay-->

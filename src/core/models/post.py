@@ -2,7 +2,7 @@ import re
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
-
+from cloudinary.models import CloudinaryField
 from django.urls import reverse
 from userprofile.models import _UserProfileModel
 
@@ -12,7 +12,7 @@ class Post(models.Model):
          default = uuid.uuid4,
          editable = False)
     user = models.ForeignKey(User, related_name="posts", on_delete=models.CASCADE)
-    image = models.ImageField(upload_to = "post_images")
+    image = CloudinaryField('image')
     date_created = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, blank=True, related_name="likes", )
     comments = models.ManyToManyField("core.Comments", related_name="post_comments", blank=True,)
@@ -24,3 +24,9 @@ class Post(models.Model):
 
     def get_absolute_url(self):      
         return reverse('post_detail', args=[str(self.id)])
+
+    @property
+    def image_url(self):
+        return (
+            f"https://res.cloudinary.com/kevinnadar/v1655924460/{self.image}"
+        )

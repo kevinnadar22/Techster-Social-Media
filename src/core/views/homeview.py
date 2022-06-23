@@ -10,7 +10,7 @@ class HomePage(LoginRequiredMixin, ListView):
     login_url = '/auth/login/'
     redirect_field_name = 'home'
     model = _Post
-    paginate_by = 2
+    paginate_by = 10
     context_object_name = 'posts'
     template_name = 'core/index.html'
     ordering = ['-date_created']
