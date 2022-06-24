@@ -144,3 +144,8 @@ cython_debug/
 /.vscode
 /env
 
+._*
+
+.gitignore
+
+

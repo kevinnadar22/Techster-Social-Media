@@ -45,6 +45,16 @@ function commentIconFunc() {
   });
 }
 
+// function goTo(page, title, url) {
+//   if ("undefined" !== typeof history.pushState) {
+//     history.pushState({page: page}, title, url);
+//   } else {
+//     window.location.assign(url);
+//   }
+// }
+
+
+
 function likeIconFunc() {
 
   NProgress.configure({ easing: 'ease', speed: 100 });
@@ -74,6 +84,8 @@ function likeIconFunc() {
         document.getElementById(`solid#${id}`).id = `regular#${id}`
 
       }
+
+      // goTo("another page", "example", 'profile/kevinnadar22');
 
       NProgress.done();
 
@@ -325,3 +337,5 @@ favoritesIcon()
 }
 
 start()
+
+
