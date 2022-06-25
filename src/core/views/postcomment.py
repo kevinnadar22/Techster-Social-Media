@@ -6,6 +6,8 @@ from ..forms import CommentForm
 import uuid
 from ..templatetags.custom_tag import get_profile_image
 from django.utils.safestring import mark_safe
+from notifications.signals import notify
+from core.templatetags.custom_tag import get_notifications
 
 class PostComment(View):
     def post(self, request,):
@@ -36,10 +38,22 @@ class PostComment(View):
 
             replaced_hash = replace_hash(commented)
 
+            if request.user != post.user:
+            
+                notify.send(    
+                request.user, 
+                recipient=post.user, 
+                verb=f'comment#{new_comment.id}', 
+                description=f'{request.user} commented on your post',
+                )
+
+            notification = get_notifications(request.user)
+
             return JsonResponse({
                 'status': 'success', 
                 'comment': commented,
-                'html': mark_safe(comment_html(profile, replaced_hash, new_comment))}
+                'html': mark_safe(comment_html(profile, replaced_hash, new_comment)),
+                'notification': notification}
                 )
 
         return HttpResponse("Error")

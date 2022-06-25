@@ -4,14 +4,13 @@ from django import template
 from django.utils.safestring import mark_safe
 register = template.Library()
 from userprofile.models import _UserProfileModel
-from ..models import _Post, _Favorite
+from ..models import _Post, _Favorite, _Comments
 from django.contrib.auth.models import User
 from django.db.models import Q
 
 @register.simple_tag
 def get_profile_image(user):
       user_profile = _UserProfileModel.objects.get(user=user)
-      print("profile image: " + user_profile.image_url)
       return user_profile.image_url
 
 @register.simple_tag()
@@ -113,3 +112,100 @@ def is_favorites_icon(user, post_id):
     if _Favorite.objects.filter(Q(user=user) & Q(post=post)).exists():
         return mark_safe('<i class="fa-solid fa-star"></i>')
     return mark_safe('<i class="fa-regular fa-star"></i>')
+
+
+@register.simple_tag()
+def get_notifications(user):
+
+    unread_notifications = user.notifications.unread() 
+    read_notifications = user.notifications.read() 
+
+    if len(unread_notifications) > 0:
+         context = get_notifications_func(unread_notifications, '#e1e1e1')
+    else:
+        context  = '''                           <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
+                                <div class="flex items-center justify-between py-3">
+                                    <div class="flex flex-1 items-center space-x-4">
+                                        No new notifications available
+                                    </div></div></div>''' 
+
+    if len(read_notifications) > 0:
+         context += get_notifications_func(read_notifications, '')
+    else:
+        context  = '''                           <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
+                                <div class="flex items-center justify-between py-3">
+                                    <div class="flex flex-1 items-center space-x-4">
+                                        No new notifications available
+                                    </div></div></div>''' 
+
+   
+
+    return mark_safe(context)
+
+
+def get_notifications_func(notifications, bgcolor):
+    context = ""
+    html = ''' <li>
+                            <a href="{}" style="background-color: {} !important">
+                                <div class="drop_avatar"> <img src={} alt="">
+                                </div>
+                                <div class="drop_content">
+                                    <p> {} </p>
+                                
+                                <span class="time-ago"> {} ago </span>
+                                </div>
+                            </a>
+                        </li>'''
+
+    if len(notifications) > 0:
+
+        for notification in notifications:
+        
+            profile = get_profile_image(notification.actor_object_id)
+
+            actor_obj = User.objects.get(id=notification.actor_object_id)
+            if notification.recipient == actor_obj:
+                pass
+
+            elif 'like' in notification.verb:
+                post_id = notification.verb.split('_')[1]
+                context += html.format(f'/p/{post_id}', bgcolor, profile, notification.description, notification.timesince())
+
+            elif 'follow' in notification.verb:
+                followed_user =  notification.verb.split('_')[0].split('#')[1]
+                context += html.format(f'/profile/{followed_user}', bgcolor, profile, notification.description, notification.timesince())
+
+            elif 'comment' in notification.verb:
+                post_id =  notification.verb.split('#')[1]
+                comment = _Comments.objects.get(id=post_id)
+                post = _Post.objects.get(comments=comment)
+                context += html.format(f'/p/{post.id}', bgcolor, profile, notification.description, notification.timesince())
+
+            elif 'likecomment' in notification.verb:
+                post_id =  notification.verb.split('_')[1]
+                user = User.objects.get(username=notification.verb.split('_')[0].split('#')[1])
+                comment = _Comments.objects.get(id=post_id)
+                post = _Post.objects.get(comments=comment)
+                context += html.format(f'/p/{post.id}', bgcolor, profile, notification.description, notification.timesince())
+
+
+    return context
+
+@register.filter
+def order_comment(post):
+    comment = post.comments.all().order_by('-date_created')[:2]
+    return comment
+
+
+@register.filter
+def order_follower_users(user_profile, current_user):
+    current_user_profile = _UserProfileModel.objects.get(user=current_user)
+    user_profile = _UserProfileModel.objects.get(user=user_profile)
+
+    following = []
+    not_following = []
+    
+    for user in current_user_profile.followers.all():
+        for user_p in user_profile.followers.all():
+            if user_p == user:
+                print(user_p)

@@ -14,6 +14,8 @@ from .views.del_post import DeletePost
 from .views.search_user import SearchUserView
 from .views.edit_post import EditPostView
 from .views.hashtag import HashtagPostView
+from .views.get_notify import get_notify
+from .views.markasread import mark_as_read
 
 
 urlpatterns = [
@@ -31,6 +33,8 @@ urlpatterns = [
     path('deletepost/', DeletePost.as_view(), name="deletepost"),
     path('search/', SearchUserView.as_view(), name="search_user"),
     path('hashtag/<str:hashtag>/', HashtagPostView.as_view(), name="hastag"),
+    path('getnotify/', get_notify, name="getnotify"),
+    path('markasread/', mark_as_read, name="mark_as_read"),
     path('profile/<str:username>/', ProfileView.as_view(), name='profile'),
 ]
 

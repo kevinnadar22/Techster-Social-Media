@@ -24,6 +24,7 @@ class HomePage(LoginRequiredMixin, ListView):
         user_profile = _UserProfileModel.objects.get(user=self.request.user)
         user_following = user_profile.following.all()
         context["users_to_follow"] = _UserProfileModel.objects.all().exclude(user__in=user_following)
-
+        user = self.request.user
+        context["unread"] = user.notifications.unread()
         return context
     

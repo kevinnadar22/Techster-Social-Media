@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'core',
     'cloudinary',
+     'notifications',
 ]
 
 MIDDLEWARE = [
@@ -345,3 +346,6 @@ JAZZMIN_SETTINGS = {
     # Add a language dropdown into the admin
     "language_chooser": False,
 }
+
+DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True,
+'SOFT_DELETE': True}

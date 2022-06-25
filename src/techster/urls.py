@@ -18,6 +18,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from core.views.error import error
+import notifications.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,8 +27,13 @@ urlpatterns = [
     path('user/', include('userprofile.urls')),
     path('', include('core.urls')),
     path('error/', error, name='error'),
+    path('inbox/notifications/', include(notifications.urls, namespace='notifications')),
 
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+handler404 = 'core.views.error.my_custom_page_not_found_view'
+handler500 = 'core.views.error.my_custom_error_view'
+handler403 = 'core.views.error.my_custom_permission_denied_view'
+handler400 = 'core.views.error.my_custom_bad_request_view'

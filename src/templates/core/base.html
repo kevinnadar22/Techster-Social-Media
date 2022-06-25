@@ -1,5 +1,6 @@
 {% load static %}
 {% load custom_tag %}
+{% load notifications_tags %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,10 +34,202 @@
 </head>
 
 <body>
+  <header>
+    <div class="header_inner">
+        <form action="{% url 'search_user' %}" method="GET">
+        <div class="left-side">
+
+            <!-- Logo -->
+            <div  id="logo">
+                <a href="/">
+                    <b><h1 class="hidden lg:block p-5" style="text-transform: uppercase;padding-right: 45px;">Techster</h1></b>
+                </a>
+            </div>
+
+            <!--<div class="triger" uk-toggle="target: #wrapper ; cls: sidebar-active">
+                <i class="uil-bars"></i>
+            </div>-->
+         
+            <div style="width:120px !important; margin:0 !important;" class="sm:m-0">
+                <input class="py-2" name="q" type="text" placeholder="Search for username..">
+            </div>
+
+               <button class="hidden lg:block" type="submit"> <i style="cursor:pointer !important" class="fa-solid fa-magnifying-glass"></i></button>
+
+        </div>
+    </form>
+        <div class="right-side lg:pr-4">
+
+
+
+                       <!-- Notification -->
+
+                       <a href="#" style="padding-right: 29px;
+                       padding-top: 22px;" class="header-links-item">
+
+                        <span class="relative inline-block">
+                            <svg class="w-6 h-6 text-gray-700 fill-current" viewBox="0 0 20 20"><path d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                            <span class="badge text-white absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">{% live_notify_badge badge_class="badge" %}</span>
+                          </span>   
+
+                        {% comment %} Notification count {% endcomment %}
+                        {% comment %} <span class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">5</span> {% endcomment %}
+
+
+                        {% comment %} <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none"><path d="M12 22a2.02 2.02 0 0 1-2.01-2h4a2.02 2.02 0 0 1-.15.78a2.042 2.042 0 0 1-1.44 1.18h-.047A1.922 1.922 0 0 1 12 22zm8-3H4v-2l2-1v-5.5a8.065 8.065 0 0 1 .924-4.06A4.654 4.654 0 0 1 10 4.18V2h4v2.18c2.579.614 4 2.858 4 6.32V16l2 1v2z" fill="currentColor"/></g></svg> {% endcomment %}
+                    </a>
+
+                    <div uk-drop="mode: click;offset: 4" class="header_dropdown">
+
+                        <div class="-mt-5 -mx-5 bg-gradient-to-t from-gray-100 to-gray-50 border-b font-bold px-6 py-3">
+                        <span>
+                            Notification  </span>   
+                            
+                            <a id="mark-all-as-read" href="#" style="
+                            padding-left: 3rem;
+                            position: relative;
+                        ">Mark all as read</a>
+                        </div>
+
+
+                        <ul id="notification_dropdown_scrollbar" class="dropdown_scrollbar" data-simplebar>
+
+                            {% get_notifications request.user %}
+
+                        </ul>
+                        
+                    </div> 
+                    {% comment %} End Notification {% endcomment %}
+
+
+             <!-- upload -->
+            {% comment %} <a href="#"
+                class="hidden my-2 bg-pink-500 flex font-bold hover:bg-pink-600 hover:text-white inline-block items-center lg:block mr-4 px-4 py-2 rounded shado text-white">
+                <ion-icon name="add-circle" class="-mb-1
+                 mr-1 opacity-90 uilus-circle"></ion-icon> Upload Post
+            </a> {% endcomment %}
+
+            <button style="margin-bottom: 0.2rem;" type="button" class="text-white bg-pink-600 hover:bg-pink-800 focus:ring-4 focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-pink-600 dark:hover:bg-pink-700 focus:outline-none dark:focus:ring-pink-800">Upload</button>
+
+    
+
+             <!-- upload dropdown box -->
+            <div uk-dropdown="pos: bottom-right;mode:click ; animation: uk-animation-slide-bottom-small" class="header_dropdown">
+
+         
+                <div class="px-4 py-3 -mx-5 -mt-4 mb-5 border-b">
+                    <h4>Upload Post</h4>
+                </div>
+
+               
+                <div class="flex justify-center flex-center text-center">
+
+                    <div class="flex flex-col choose-upload text-center">
+                       
+                        <div class="bg-gray-100 border-2 border-dashed flex flex-col h-24 items-center justify-center relative w-full rounded-lg  ">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-12">
+                                <path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z" />
+                                <path d="M9 13h2v5a1 1 0 11-2 0v-5z" />
+                            </svg>
+                        </div>
+
+                        <p class="my-3 leading-6"> Upload Images <br> please upload her ..
+                        </p>
+
+                        {% comment %} Upload Post {% endcomment %}
+
+                    <form method="post" action="{% url 'upload_post' %}" enctype="multipart/form-data"> {% csrf_token %}
+                        <div uk-form-custom>
+
+                            <input name="image" type="file" accept="image/*">
+                            <a href="#" class="button soft-warning small"> Choose file</a>
+                            
+                        </div>
+
+                        <textarea type="text" class="mt-5" name="caption" id="captions" placeholder="Post Caption"  cols="30" rows="10"></textarea>
+
+                        <div uk-form-custom class="mt-5">
+                            <input  type="submit">
+                            
+                        </div>
+                    </form>
+
+                    {% comment %} Upload Post {% endcomment %}
+
+
+                    </div>
+
+                    <div class="uk-flex uk-flex-column choose-upload" hidden>
+                        <div class="mx-auto flex flex-col h-24 items-center justify-center relative w-full rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-12">
+                                <path fill-rule="evenodd" d="M2 9.5A3.5 3.5 0 005.5 13H9v2.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 15.586V13h2.5a4.5 4.5 0 10-.616-8.958 4.002 4.002 0 10-7.753 1.977A3.5 3.5 0 002 9.5zm9 3.5H9V8a1 1 0 012 0v5z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <p class="my-3 leading-6"> Import videos from YouTube <br> Copy / Paste your video link here </p>
+                        <form class="uk-grid-small" uk-grid>
+                            <div class="uk-width-expand">
+                                <input type="text" class="uk-input uk-form-small  bg-gray-200 " style="box-shadow:none" placeholder="Paste link">
+                            </div>
+                            <div class="uk-width-auto"> <button type="submit" class="button soft-warning -ml-2">
+                                    Import </button> </div>
+                        </form>
+                        <a href="#" class="uk-text-muted mt-3 uk-link"
+                            uk-toggle="target: .choose-upload ; animation: uk-animation-slide-left-small, uk-animation-slide-right-medium; queued: true">
+                            Or Upload Video </a>
+                    </div>
+
+                </div>
+                <div class="px-4 py-3 -mx-5 -mb-4 mt-5 border-t text-sm">
+                    Your Video size Must be Maxmium 999MB
+                </div>
+            </div>
+            
+  
+            <!-- Messages -->
+       {% comment %} 
+            <a href="#" class="header-links-item">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="0.5em" height="0.5em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><g fill="currentColor"><path d="M2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/></g></svg>
+            </a> {% endcomment %}
+
+
+            <!-- profile -->
+
+            <a href="#">
+                <img src="{% get_profile_image request.user %}" class="header-avatar" alt="">
+            </a>
+            <div uk-drop="mode: click;offset:9" class="header_dropdown profile_dropdown border-t">
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a> </li>
+                    <li><a href="{% url 'edit_profile' %}">Account settings</a> </li>
+                    <li><a href="{% url 'profile' request.user %}">Profile </a> </li>
+                    <li><a href="{% url 'favorite_view' %}">Favorites </a> </li>
+                    <li><a href="{% url 'logout' %}"> Log Out</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</header>
+
 
     {% block content %}{% endblock content %}
 
+    <script>
+      function update_notification(){
+        $.ajax({
+          type: 'GET',
+          url: '/getnotify/',
+          success: function (data) {  
+            console.log(data);
+            document.getElementById('notification_dropdown_scrollbar').innerHTML = data[1]
+          }
+        });
+          }
+    </script>
+
  
+    <script src="{% static 'notifications/notify.js' %}" type="text/javascript"></script>
+    {% register_notify_callbacks callbacks='fill_notification_list,fill_notification_badge,update_notification' fetch=100 badge_class='badge' %}
 
     <script src="{% static 'assets/js/tippy.all.min.js' %}"></script>  
     <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>

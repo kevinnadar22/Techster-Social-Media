@@ -11,7 +11,9 @@
   <link href="{% static 'img/favicon.png' %}" rel="icon">
   <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.4.6/tailwind.min.css">
+
 <link rel="stylesheet" href="{% static 'css/progress.css' %}">
 
 <style>
@@ -104,12 +106,25 @@
               posts
             </li>
   
-            <li>
-              <span id="followcount#{{profile.user}}" class="font-semibold">{{profile.followers.all.count}}  followers</span>
+            <li {% if profile.followers.all.count == 0 %} 
+
+            {% else %}
+            
+            data-modal-toggle="followersModal" style="cursor: pointer;"       {% endif %} >
+              <span id="followcount#{{profile.user}}" class="font-semibold">{{profile.followers.all.count}} </span> 
+              followers
           
             </li>
-            <li>
-              <span class="font-semibold">{{profile.following.all.count}} following</span>
+
+
+            <li           {% if profile.following.all.count == 0 %} 
+
+            {% else %}
+            
+            data-modal-toggle="followingModal" style="cursor: pointer;"       {% endif %}>
+      
+              <span class="font-semibold">{{profile.following.all.count}} </span> 
+              following
             </li>
           </ul>
   
@@ -140,12 +155,29 @@
             <span class="font-semibold text-gray-800 block">{{posts.count}}</span>
             posts
           </li>
+
   
-          <li>
-            <span id="followcount#{{profile.user}}" class="font-semibold text-gray-800 block">{{profile.followers.all.count}} followers</span>
+          <li style=" cursor: pointer;" 
+          {% if profile.followers.all.count == 0 %} 
+
+          {% else %}
+          
+          data-modal-toggle="followersModal">
+          {% endif %}
+            <span id="followcount#{{profile.user}}" class="font-semibold text-gray-800 block">{{profile.followers.all.count}}</span>
+            followers
           </li>
-          <li>
-            <span class="font-semibold text-gray-800 block">{{profile.following.all.count}} following</span>
+
+     
+
+          <li           {% if profile.following.all.count == 0 %} 
+
+          {% else %}
+          
+          data-modal-toggle="followingModal"          {% endif %}>
+ 
+            <span class="font-semibold text-gray-800 block">{{profile.following.all.count}} </span>
+            following
        
           </li>
         </ul>
@@ -249,8 +281,202 @@
         </div>
       </div>
     </div>
+
+    {% comment %} follow modals {% endcomment %}
+
+    <!-- Modal -->
+
+
+<!-- Followers Modal toggle -->
+
+<div id="followersModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center">
+    <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    {{profile.user}} followers
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="followersModal">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                </button>
+            </div>
+            <!-- Modal body -->
+
+<main>
+
+
+  <div class="">
+
+    <div class="bg-white  shadow-md rounded-md overflow-y-auto ">
+
+        {% comment %}  Followers {% endcomment %}
+
+        {% for user_profile in profile.followers.all %}
+
+        {% is_following request.user user_profile as is_following %}
+
+       {% if is_following == 'Following'%}
+        <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
+            <div class="flex items-center justify-between py-3">
+                <div class="flex flex-1 items-center space-x-4">
+                    <a href="#">
+                        <img src="{% get_profile_image user_profile%}" class="bg-gray-200 rounded-full w-10 h-10">
+                    </a>
+                    <div class="flex flex-col">
+                        <a href="{% url 'profile' user_profile %}"><span class="block font-semibold"> {{user_profile}} </span></a>
+                        <span  id="followcount#{{user_profile}}" class="follow-m text-sm"> {{user_profile.following.all.count }} followers</span> 
+                    </div>
+                </div>
+                
+                <a href="#" id="follow#{{user_profile}}" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 follow"> {% is_following request.user user_profile %} </a>
+            </div> 
+        </div>
+        {% endif %}
+
+        {% endfor %}
+
+        {% comment %} Non Followers {% endcomment %}
+
+        {% for user_profile in profile.followers.all %}
+
+        {% is_following request.user user_profile as is_following %}
+
+       {% if is_following == 'Follow'%}
+        <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
+            <div class="flex items-center justify-between py-3">
+                <div class="flex flex-1 items-center space-x-4">
+                    <a href="#">
+                        <img src="{% get_profile_image user_profile%}" class="bg-gray-200 rounded-full w-10 h-10">
+                    </a>
+                    <div class="flex flex-col">
+                        <a href="{% url 'profile' user_profile %}"><span class="block font-semibold"> {{user_profile}} </span></a>
+                        <span  id="followcount#{{user_profile}}" class="follow-m text-sm"> {{user_profile.following.all.count }} followers</span> 
+                    </div>
+                </div>
+                
+                <a href="#" id="follow#{{user_profile}}" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 follow"> {% is_following request.user user_profile %} </a>
+            </div> 
+        </div>
+        {% endif %}
+
+        {% endfor %}
+ 
+
+        {% comment %}  End Users to Follow  {% endcomment %}
+
+    </div>
+
+  
+
+</div>
+
+
+</main>
+
+        </div>
+    </div>
+</div>
+
+<!-- Following modal -->
+
+
+<div id="followingModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center">
+  <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+      <!-- Modal content -->
+      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+          <!-- Modal header -->
+          <div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
+              <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                  {{profile.user}} Following
+              </h3>
+              <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="followingModal">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+              </button>
+          </div>
+          <!-- Modal body -->
+
+<main>
+
+
+<div class="">
+
+  <div class="bg-white  shadow-md rounded-md overflow-y-auto ">
+
+      {% comment %}  Followers {% endcomment %}
+
+      {% for user_profile in profile.following.all %}
+
+      {% is_following request.user user_profile as is_following %}
+
+     {% if is_following == 'Following'%}
+      <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
+          <div class="flex items-center justify-between py-3">
+              <div class="flex flex-1 items-center space-x-4">
+                  <a href="#">
+                      <img src="{% get_profile_image user_profile%}" class="bg-gray-200 rounded-full w-10 h-10">
+                  </a>
+                  <div class="flex flex-col">
+                      <a href="{% url 'profile' user_profile %}"><span class="block font-semibold"> {{user_profile}} </span></a>
+                      <span  id="followcount#{{user_profile}}" class="follow-m text-sm"> {{user_profile.following.all.count }} followers</span> 
+                  </div>
+              </div>
+              
+              <a href="#" id="follow#{{user_profile}}" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 follow"> {% is_following request.user user_profile %} </a>
+          </div> 
+      </div>
+      {% endif %}
+
+      {% endfor %}
+
+      {% comment %} Non Followers {% endcomment %}
+
+      {% for user_profile in profile.following.all %}
+
+      {% is_following request.user user_profile as is_following %}
+
+     {% if is_following == 'Follow'%}
+      <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
+          <div class="flex items-center justify-between py-3">
+              <div class="flex flex-1 items-center space-x-4">
+                  <a href="#">
+                      <img src="{% get_profile_image user_profile%}" class="bg-gray-200 rounded-full w-10 h-10">
+                  </a>
+                  <div class="flex flex-col">
+                      <a href="{% url 'profile' user_profile %}"><span class="block font-semibold"> {{user_profile}} </span></a>
+                      <span  id="followcount#{{user_profile}}" class="follow-m text-sm"> {{user_profile.following.all.count }} followers</span> 
+                  </div>
+              </div>
+              
+              <a href="#" id="follow#{{user_profile}}" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 follow"> {% is_following request.user user_profile %} </a>
+          </div> 
+      </div>
+      {% endif %}
+
+      {% endfor %}
+
+
+      {% comment %}  End Users to Follow  {% endcomment %}
+
+  </div>
+
+
+
+</div>
+
+
+</main>
+
+      </div>
+  </div>
+</div>
+
+
+
+
   </main>
-    
+  <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.js"></script>
   <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
     <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
     <script src="/static/js/comments.js"></script>
