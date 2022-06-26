@@ -121,7 +121,7 @@ def get_notifications(user):
     read_notifications = user.notifications.read() 
 
     if len(unread_notifications) > 0:
-         context = get_notifications_func(unread_notifications, '#e1e1e1')
+        context = get_notifications_func(unread_notifications, '#e1e1e1')
     else:
         context  = '''                           <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
                                 <div class="flex items-center justify-between py-3">
@@ -130,15 +130,7 @@ def get_notifications(user):
                                     </div></div></div>''' 
 
     if len(read_notifications) > 0:
-         context += get_notifications_func(read_notifications, '')
-    else:
-        context  = '''                           <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
-                                <div class="flex items-center justify-between py-3">
-                                    <div class="flex flex-1 items-center space-x-4">
-                                        No new notifications available
-                                    </div></div></div>''' 
-
-   
+        context += get_notifications_func(read_notifications, '')
 
     return mark_safe(context)
 
@@ -178,14 +170,15 @@ def get_notifications_func(notifications, bgcolor):
             elif 'comment' in notification.verb:
                 post_id =  notification.verb.split('#')[1]
                 comment = _Comments.objects.get(id=post_id)
-                post = _Post.objects.get(comments=comment)
+                
+                post = _Post.objects.get(posted_comments=comment)
                 context += html.format(f'/p/{post.id}', bgcolor, profile, notification.description, notification.timesince())
 
             elif 'likecomment' in notification.verb:
                 post_id =  notification.verb.split('_')[1]
                 user = User.objects.get(username=notification.verb.split('_')[0].split('#')[1])
                 comment = _Comments.objects.get(id=post_id)
-                post = _Post.objects.get(comments=comment)
+                post = _Post.objects.get(posted_comments=comment)
                 context += html.format(f'/p/{post.id}', bgcolor, profile, notification.description, notification.timesince())
 
 
@@ -193,17 +186,16 @@ def get_notifications_func(notifications, bgcolor):
 
 @register.filter
 def order_comment(post):
-    comment = post.comments.all().order_by('-date_created')[:2]
-    return comment
+    if post.comments is not None:
+        comment = post.comments.all().order_by('-date_created')[:2]
+        return comment
+
 
 
 @register.filter
 def order_follower_users(user_profile, current_user):
     current_user_profile = _UserProfileModel.objects.get(user=current_user)
     user_profile = _UserProfileModel.objects.get(user=user_profile)
-
-    following = []
-    not_following = []
     
     for user in current_user_profile.followers.all():
         for user_p in user_profile.followers.all():

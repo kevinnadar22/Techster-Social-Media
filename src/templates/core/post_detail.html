@@ -35,7 +35,7 @@
 
                       <div>
                         <a href="#"> <i class="icon-feather-more-horizontal text-2xl hover:bg-gray-200 rounded-full p-2 transition -mr-1 "></i> </a>
-                        <div class="bg-white w-56 shadow-md mx-auto p-2 mt-12 rounded-md text-gray-500 hidden text-base border border-gray-100" uk-drop="mode: click;pos: top-right">
+                        <div class="bg-white w-56 shadow-md mx-auto p-2 mt-12 rounded-md text-gray-500 hidden text-base border border-gray-100" uk-drop="mode: hover;pos: top-right">
 
                             <ul class="space-y-1">
                                 <li> 
@@ -64,13 +64,30 @@
                                 </li>
                            
                                 <li> 
-                                    <a href="" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md ">
-                                      <div style="cursor: pointer;" class="p-2 rounded-full text-black">
-                                          <i class="fa-solid fa-comment-slash"></i>  
-                                 
-                                      </div>
-                                      <span>Disable</span>
-                                    </a> 
+                                    <a id="disable-comment#{{post.id}}" href="#" class="disable-comments flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md ">
+
+
+                                        {% if post.is_comment_disabled %}
+
+                                        <div style="cursor: pointer;" class="p-2 rounded-full text-black">
+                                            <i class="fa-solid fa-comment"></i>
+                                   
+                                        </div>
+                                        <span>Enable</span>
+        
+                                        
+                                        {% else %}
+               
+        
+                                        <div style="cursor: pointer;" class="p-2 rounded-full text-black">
+                                            <i class="fa-solid fa-comment-slash"></i>  
+                                   
+                                        </div>
+                                        <span>Disable</span>
+        
+                                        {% endif %}
+                                    </a>
+
                                 </li> 
                                 {% endif %}
 
@@ -194,22 +211,26 @@
 
                           <p> {% replace_hash post.caption %} </p>
 
-                        <div class="bg-gray-100 bg-gray-100 rounded-full rounded-md relative ">
-
-
+                          {% if post.is_comment_disabled is not True %}
+                          <div class="bg-gray-100 bg-gray-100 rounded-full rounded-md relative ">
+    
+    
                             <form method="post"> {% csrf_token %}
-
+    
                             <input oninvalid="this.setCustomValidity('Enter atleast 2 characters')" required id="comment#{{post.id}}" name="comment" minlength="2" type="text" placeholder="Post a comment" class="bg-transparent max-h-10 shadow-none">
-
+    
                             <div class="absolute bottom-0 flex h-full items-center right-0 right-3 text-xl space-x-2">
-
+    
                             <input type="hidden" name="post" value="{{post.id}}">
                                 
-                               <button class="post-comment comment-form" id="post#{{post.id}}" type="submit">Send</button>
-
+                               <button class="post-comment comment-form" id="post#{{post.id}}">Send</button>
+    
                             </form>
+        
                             </div>
+               
                         </div>
+                        {% endif %}
 
                         <div class="comments-container_{{post.id}} border-t pt-4 space-y-4 ">
 

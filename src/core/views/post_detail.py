@@ -27,5 +27,7 @@ class PostDetailView(DetailView):
         user_profile = _UserProfileModel.objects.get(user=self.request.user)
         user_following = user_profile.following.all()
         context["users_to_follow"] = _UserProfileModel.objects.all().exclude(user__in=user_following)
-        context["comments"] = _Post.objects.get(id=id).comments.all().order_by('-date_created')
+
+        if _Post.objects.get(id=id).is_comment_disabled == False:
+                context["comments"] = _Post.objects.get(id=id).comments.all().order_by('-date_created')
         return context

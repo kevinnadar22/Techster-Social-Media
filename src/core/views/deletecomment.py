@@ -9,7 +9,7 @@ class DeleteComment(View):
         user = self.request.user
         comment = _Comments.objects.get(id=comment_id)
 
-        post = _Post.objects.get(comments=comment)
+        post = _Post.objects.get(posted_comments=comment)
         if comment.user == user:
             post.user.notifications.filter(verb=f"comment#{comment.id}").delete()
             notification = get_notifications(request.user)

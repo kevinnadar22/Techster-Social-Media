@@ -16,7 +16,7 @@ class LikeComment(View):
                 
                 my_user = _Comments.objects.get(id=id).user
                 comment = _Comments.objects.get(id=id) 
-                post = _Post.objects.get(comments=comment)
+                post = _Post.objects.get(posted_comments=comment)
                 string = f"commentlike#{current_user}_{post.id}_{comment.id}"
                 my_user.notifications.filter(verb=string).delete()
 
@@ -30,7 +30,7 @@ class LikeComment(View):
         count =  _Comments.objects.get(id=id).comment_like.all().count()
 
         comment = _Comments.objects.get(id=id)
-        post = _Post.objects.get(comments=comment)
+        post = _Post.objects.get(posted_comments=comment)
 
         if request.user != comment.user:
             notify.send(    

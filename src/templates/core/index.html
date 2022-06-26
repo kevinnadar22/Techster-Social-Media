@@ -71,12 +71,27 @@
                           </li>
                      
                           <li> 
-                              <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md ">
+                              <a id="disable-comment#{{post.id}}" href="#" class="disable-comments flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md ">
+
+                                {% if post.is_comment_disabled %}
+
+                                <div style="cursor: pointer;" class="p-2 rounded-full text-black">
+                                    <i class="fa-solid fa-comment"></i>
+                           
+                                </div>
+                                <span>Enable</span>
+
+                                
+                                {% else %}
+       
+
                                 <div style="cursor: pointer;" class="p-2 rounded-full text-black">
                                     <i class="fa-solid fa-comment-slash"></i>  
                            
                                 </div>
                                 <span>Disable</span>
+
+                                {% endif %}
                               </a> 
                           </li> 
                           {% endif %}
@@ -188,6 +203,9 @@
                       </p>
 
 
+                      {% if post.is_comment_disabled is not True %}
+
+
                       <div class="bg-gray-100 bg-gray-100 rounded-full rounded-md relative ">
 
 
@@ -202,9 +220,11 @@
                            <button class="post-comment comment-form" id="post#{{post.id}}">Send</button>
 
                         </form>
-                        
+    
                         </div>
+           
                     </div>
+                    {% endif %}
 
                     <div class="comments-container_{{post.id}} border-t pt-4 space-y-4 ">
 

@@ -312,10 +312,52 @@ function deletePostFunc(event) {
       deleted_post: deleted_post,
     },
     success: function (data) {
-      console.log(data);
+  
       if (data['status'] == 'success') {
         window.location.replace("/");
       }
+
+      NProgress.done();
+      start()
+    }
+  });
+}
+
+// Disable comments
+
+function disablecommentIcon() {
+  var disableComments = document.querySelectorAll('.disable-comments'),
+  disableCommentsArray = Array.from(disableComments);
+
+  disableCommentsArray.forEach(function (disableCommentsElem) {
+    disableCommentsElem.addEventListener('click', disableCommentsFunc);
+  });
+
+}
+
+
+function disableCommentsFunc(event) {
+
+  NProgress.configure({ easing: 'ease', speed: 100 });
+  NProgress.configure({ trickleSpeed: 200 });
+
+  NProgress.start();
+
+
+  event.preventDefault()
+  id = this.id
+  let disableCommentsPostId = this.id.replace("disable-comment#", '')
+
+  $.ajax({
+    type: 'GET',
+    url: '/disable-comments/',
+    data: {
+      post_id: disableCommentsPostId,
+    },
+    success: function (data) {
+      console.log(document.getElementById(id))
+      let disableCommentsPostId = document.getElementById(id)
+      disableCommentsPostId.innerHTML = data['html']
 
       NProgress.done();
       start()
@@ -361,6 +403,7 @@ function markAsReadFunc() {
 
 
 
+
 function start() {
   deleteIcon()
   postcomment()
@@ -369,6 +412,7 @@ function start() {
   deletecomment()
   favoritesIcon()
   markAsReadFunc()
+  disablecommentIcon()
 }
 
 start()

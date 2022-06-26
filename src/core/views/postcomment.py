@@ -29,7 +29,7 @@ class PostComment(View):
             new_comment.post = post
             new_comment.user = request.user
             new_comment.save()
-            post.comments.add(new_comment)
+            post.posted_comments.add(new_comment)
             post.save()
             commented = request.POST.get('comment')
 

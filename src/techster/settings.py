@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'core',
     'cloudinary',
-     'notifications',
+    'notifications',
 ]
 
 MIDDLEWARE = [
@@ -96,24 +96,24 @@ AUTHENTICATION_BACKENDS = (
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME':'dbamc6j8s3l8nu',
-#         'HOST':'ec2-18-204-142-254.compute-1.amazonaws.com',
-#         'PORT':5432,
-#         'USER' : 'youaivhitcsfjq',
-#         'PASSWORD' : '5b38b4b15fe7094c499eeb9590474355ac9d92e8cce6f8bd8edc24f6476230e3'
-        
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME':'dbamc6j8s3l8nu',
+        'HOST':'ec2-18-204-142-254.compute-1.amazonaws.com',
+        'PORT':5432,
+        'USER' : 'youaivhitcsfjq',
+        'PASSWORD' : '5b38b4b15fe7094c499eeb9590474355ac9d92e8cce6f8bd8edc24f6476230e3'
+        
+    }
+}
 
 
 # Password validation
@@ -186,10 +186,6 @@ LOGIN_REDIRECT_URL = LOGIN_REDIRECT_URL
 
 SOCIAL_AUTH_GITHUB_KEY = SOCIAL_AUTH_GITHUB_KEY
 SOCIAL_AUTH_GITHUB_SECRET = SOCIAL_AUTH_GITHUB_SECRET
-
-SOCIAL_AUTH_TWITTER_KEY = SOCIAL_AUTH_TWITTER_KEY
-SOCIAL_AUTH_TWITTER_SECRET = SOCIAL_AUTH_TWITTER_SECRET
-
 
 SOCIAL_AUTH_FACEBOOK_KEY = SOCIAL_AUTH_FACEBOOK_KEY  # App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = SOCIAL_AUTH_FACEBOOK_SECRET  # App Secret

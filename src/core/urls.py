@@ -16,6 +16,7 @@ from .views.edit_post import EditPostView
 from .views.hashtag import HashtagPostView
 from .views.get_notify import get_notify
 from .views.markasread import mark_as_read
+from .views.disable_comments import DisableCommentsView
 
 
 urlpatterns = [
@@ -35,6 +36,7 @@ urlpatterns = [
     path('hashtag/<str:hashtag>/', HashtagPostView.as_view(), name="hastag"),
     path('getnotify/', get_notify, name="getnotify"),
     path('markasread/', mark_as_read, name="mark_as_read"),
+    path('disable-comments/', DisableCommentsView.as_view(), name="disable_comments"),
     path('profile/<str:username>/', ProfileView.as_view(), name='profile'),
 ]
 

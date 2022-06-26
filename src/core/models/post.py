@@ -15,9 +15,10 @@ class Post(models.Model):
     image = CloudinaryField('image')
     date_created = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, blank=True, related_name="likes", )
-    comments = models.ManyToManyField("core.Comments", related_name="post_comments", blank=True,)
+    posted_comments = models.ManyToManyField("core.Comments", related_name="post_comments", blank=True,)
     caption = models.TextField(blank=True, null=True, help_text="Description")
     user_profile = models.ForeignKey(_UserProfileModel, related_name="user_profile", on_delete=models.CASCADE, blank=True, null=True)
+    is_comment_disabled = models.BooleanField(default=False, help_text="Enabled by default")
 
     def __str__(self):
         return self.id.__str__()
@@ -30,3 +31,12 @@ class Post(models.Model):
         return (
             f"https://res.cloudinary.com/kevinnadar/v1655924460/{self.image}"
         )
+
+    @property
+    def comments(self):
+        if self.is_comment_disabled:
+            return None
+        return self.posted_comments
+
+    class Meta:
+        ordering = ['-date_created']
