@@ -13,6 +13,9 @@ from userprofile.models import _UserProfileModel
 class EditSettingsView(View):
 
     def post(self, request):
+# The above code is checking if the user has changed their username or email. If they have, it will
+# check if the new username or email is valid. If it is, it will save the new username or email. If it
+# is not, it will not save the new username or email.
         if 'settings' in request.POST:
             data = request.POST.dict()
             changed_username = data.get('username')
@@ -49,6 +52,7 @@ class EditSettingsView(View):
             return HttpResponseRedirect('/user/edit-profile/')
 
         if 'verify_email' in request.POST:
+# This is sending an email to the user with a link to verify their email.
             subject = 'Activate your account'
             user = request.user
             email_token = send_email(

@@ -12,6 +12,7 @@ GENDER = [
 
 
 class UserEditProfile(models.Model):
+# Creating a model for the user profile.
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=True, null=True)
@@ -36,6 +37,9 @@ class UserEditProfile(models.Model):
         return self.user.username
 
     def save(self, *args, **kwargs):
+        """
+        If the phone number starts with 91, replace it with nothing.
+        """
 
         if self.phone is not None:
             if str(self.phone).startswith("91"):
@@ -46,8 +50,13 @@ class UserEditProfile(models.Model):
 
     @property
     def image_url(self):
+        """
+        If the user has a profile image, return the url of the image, otherwise return the url of the
+        default profile image
+        :return: The image url is being returned.
+        """
         if self.profile_image is None:
-            return '/media/default_profile.png'
+            return '/static/img/default_profile.png'
         return (
             f"https://res.cloudinary.com/kevinnadar/v1655924460/{self.profile_image}"
         )

@@ -9,12 +9,21 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 
 @register.simple_tag
+
 def get_profile_image(user):
-      user_profile = _UserProfileModel.objects.get(user=user)
-      return user_profile.image_url
+    """
+    It takes a user object as an argument, and returns the image_url of the user's profile.
+    
+    :param user: The user object that you want to get the profile image for
+    :return: The image url of the user profile.
+    """
+    user_profile = _UserProfileModel.objects.get(user=user)
+    return user_profile.image_url
+
 
 @register.simple_tag()
 def replace_hash(caption:str):
+# A custom template tag that replaces hashtags and mentions with links.
     content = caption
     arr = re.findall(r"#(\w+)", content)
     for hsh in arr:
@@ -32,6 +41,8 @@ def replace_hash(caption:str):
  
 @register.simple_tag()
 def liked_by_user(user, id):
+# A custom template tag that takes a user object and a post id as arguments, and returns the number of
+# likes on the post.
     current_user = user
     liked_users = _Post.objects.get(id=id).likes.all()
     for user in liked_users:
@@ -46,6 +57,7 @@ def liked_by_user(user, id):
 
 @register.simple_tag()
 def liked_by_user_icon(user, id):
+# Checking if the current user has liked the post.
     current_user = user
     liked_users = _Post.objects.get(id=id).likes.all()
     for user in liked_users:
@@ -59,6 +71,8 @@ def liked_by_user_icon(user, id):
 
 @register.simple_tag()
 def is_social_media(user):
+# A custom template tag that takes a user object as an argument, and returns the social media links of
+# the user's profile.
     user_profile = _UserProfileModel.objects.get(user=user)
     facebook = user_profile.facebook
     instagram = user_profile.instagram
@@ -87,6 +101,7 @@ def is_social_media(user):
 
 @register.simple_tag()
 def is_following(current_user, follow_user):
+# Checking if the current user is following the user that is passed in as an argument.
     current_user1 = User.objects.get(username=current_user)
     followed_user1 = User.objects.get(username=follow_user)
     current_user_profile = _UserProfileModel.objects.get(user=current_user1)
@@ -100,6 +115,7 @@ def is_following(current_user, follow_user):
 
 @register.simple_tag()
 def is_favorites(user, post_id):
+# Checking if the current user has favorited the post.
     post = _Post.objects.get(id=post_id)
     if _Favorite.objects.filter(Q(user=user) & Q(post=post)).exists():
         return "Remove Favorites"
@@ -108,6 +124,13 @@ def is_favorites(user, post_id):
 
 @register.simple_tag()
 def is_favorites_icon(user, post_id):
+    """
+    If the user has favorited the post, return a solid star, otherwise return a regular star
+    
+    :param user: The user who is logged in
+    :param post_id: The id of the post that the user is favoriting
+    :return: A string of HTML code.
+    """
     post = _Post.objects.get(id=post_id)
     if _Favorite.objects.filter(Q(user=user) & Q(post=post)).exists():
         return mark_safe('<i class="fa-solid fa-star"></i>')
@@ -117,6 +140,9 @@ def is_favorites_icon(user, post_id):
 @register.simple_tag()
 def get_notifications(user):
 
+# The above code is a function that takes in a user and returns a string of HTML code. The HTML code
+# is a list of notifications that the user has. The notifications are either read or unread. The
+# function is used in the notifications.html file.
     unread_notifications = user.notifications.unread() 
     read_notifications = user.notifications.read() 
 
@@ -136,6 +162,13 @@ def get_notifications(user):
 
 
 def get_notifications_func(notifications, bgcolor):
+    """
+    The function takes in a list of notifications and a background color, then it loops through the list
+    of notifications and returns a string of html code that contains the notifications
+    
+    :param notifications: This is the list of notifications that you want to display
+    :param bgcolor: This is the background color of the notification
+    """
     context = ""
     html = ''' <li>
                             <a href="{}" style="background-color: {} !important">
@@ -186,18 +219,10 @@ def get_notifications_func(notifications, bgcolor):
 
 @register.filter
 def order_comment(post):
+# Checking if the post has any comments, if it does, then it returns the last two comments.
     if post.comments is not None:
         comment = post.comments.all().order_by('-date_created')[:2]
         return comment
 
 
 
-@register.filter
-def order_follower_users(user_profile, current_user):
-    current_user_profile = _UserProfileModel.objects.get(user=current_user)
-    user_profile = _UserProfileModel.objects.get(user=user_profile)
-    
-    for user in current_user_profile.followers.all():
-        for user_p in user_profile.followers.all():
-            if user_p == user:
-                print(user_p)

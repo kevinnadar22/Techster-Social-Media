@@ -4,6 +4,7 @@ from .views.edit_profile import EditProfileView
 from .views.settings import EditSettingsView
 from .views.two2fa import get_otp_view, get_otp
 
+# A list of url patterns.
 urlpatterns = [
     path('edit-profile/', EditProfileView.as_view(), name='edit_profile'),
     path('2fa/', get_otp_view, name='2fa'),

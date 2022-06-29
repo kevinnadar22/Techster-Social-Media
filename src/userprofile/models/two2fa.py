@@ -10,7 +10,13 @@ class OTPModel(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
     @property
+
     def is_expired(self): 
+        """
+        If the difference between the current time and the time the object was created is greater than 1200
+        seconds, return True. Otherwise, return False.
+        :return: A list of all the questions in the database.
+        """
         x = self.date_created
         timestamp = x.replace(tzinfo=timezone.utc).timestamp()
         x2 = datetime.datetime.now()
